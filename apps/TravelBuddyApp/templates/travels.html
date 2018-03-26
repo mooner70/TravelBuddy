@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta http-equiv="X-UA-Compatible" content="ie=edge">
+        <title>Travel Dashboard</title>
+        <link rel="stylesheet" type="text/css" href="static/styles.css">
+    </head>
+<body>
+    <form action="/travels" method="POST" class="form-style-9">
+        {% csrf_token %}
+        <a href="/">Logout</a>
+        <h3>Hello, {{request.session.name}}</h3>
+        <!-- <h2>You have successfully {{request.session.success}}</h2> -->
+    </form>
+    <form class="form-style-9">
+        <table>
+            <tr>
+                <p>Your Trip Schedule</p>
+                <th>Destination</th>
+                <th>Travel Start Date</th>
+                <th>Trave End Date</th>
+                <th>Plan</th>
+            </tr>
+            {% for travel_plans in travel_plans %}
+            <tr>
+                    <td>{{travel_plans.destination}}</td>
+                    <td>{{travel_plans.travel_date_from}}</td>
+                    <td>{{travel_plans.travel_date_to}}</td>
+                    <td>{{travel_plans.description}}</td>        
+            </tr>
+            {% endfor %}
+        </table>
+        <p></p>
+        <table>
+            <tr>
+                <p>Other User's Travel Plans</p>
+                <th>Name</th>
+                <th>Destination</th>
+                <th>Travel Start Date</th>
+                <th>Trave End Date</th>
+                <th>Do you want to join?</th>
+            </tr>
+            <tr>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+            </tr>
+        </table>
+        <a href="/travels/add">Add Travel Plan</a>
+    </form>
+</body>
+</html>
