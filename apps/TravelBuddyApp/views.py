@@ -35,6 +35,9 @@ def index(request):
     return render(request, 'index.html')
 def add_travel(request):
     return render(request, 'add.html')
+def logout(request):
+    request.session.flush()
+    return redirect('/')
 def add(request):
     errors = TravelPlans.objects.add_validator(request.POST)
     if len(errors):
@@ -47,9 +50,22 @@ def add(request):
         return redirect("/travels")
 def travels(request):
     c = UserRegistration.objects.get(id=request.session["user_id"])
+    d = UserRegistration.objects.exclude(id=request.session["user_id"])
     context = {
-        "travel_plans" : TravelPlans.objects.filter(user = c)
-        }
+        "travel_plans" : TravelPlans.objects.filter(user = c),
+        "others_plans" : TravelPlans.objects.filter(user = d),
+        "joined_plans" : TravelPlans.objects.filter(travelers=request.session["user_id"])}
+    
+
     return render(request, 'travels.html', context)
-def destination(request):
-    return render(request, 'destination.html')
+def destination(request, id):
+    context = {
+        "travel_plans" : TravelPlans.objects.get(id=id)
+        }
+    return render(request, 'destination.html', context)
+def join(request, id):
+    userjoin = UserRegistration.objects.get(id=request.session["user_id"])
+    e = TravelPlans.objects.get(id=id)
+    userjoin.trips.add(e)  
+    return redirect('/travels')
+    # e.travelers=request.session["user_id"]

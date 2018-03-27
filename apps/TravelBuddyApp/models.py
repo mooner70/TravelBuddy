@@ -63,6 +63,7 @@ class TravelPlans(models.Model):
     travel_date_to = models.DateField(null=True, blank=True)
     description = models.CharField(max_length=255)
     user = models.ForeignKey(UserRegistration, related_name = "destination")
+    travelers = models.ManyToManyField(UserRegistration, related_name = "trips")
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
     objects = RegManager()

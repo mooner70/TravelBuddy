@@ -10,7 +10,7 @@
 <body>
     <form action="/travels" method="POST" class="form-style-9">
         {% csrf_token %}
-        <a href="/">Logout</a>
+        <a href="/logout">Logout</a>
         <h3>Hello, {{request.session.name}}</h3>
         <!-- <h2>You have successfully {{request.session.success}}</h2> -->
     </form>
@@ -25,15 +25,25 @@
             </tr>
             {% for travel_plans in travel_plans %}
             <tr>
-                    <td>{{travel_plans.destination}}</td>
+                    <td><a href="/travels/destination/{{travel_plans.id}}">{{travel_plans.destination}}</a></td>
                     <td>{{travel_plans.travel_date_from}}</td>
                     <td>{{travel_plans.travel_date_to}}</td>
                     <td>{{travel_plans.description}}</td>        
             </tr>
             {% endfor %}
+            {% for joined_plans in joined_plans %}
+            <tr>
+                    <td><a href="/travels/destination/{{travel_plans.id}}"></a></td>
+                    <td>{{joined_plans.destination}}</td>
+                    <td>{{joined_plans.travel_date_from}}</td>
+                    <td>{{joined_plans.travel_date_to}}</td>
+                    <td>{{joined_plans.description}}</td>        
+            </tr>
+            {% endfor %}
         </table>
-        <p></p>
+        <hr>
         <table>
+
             <tr>
                 <p>Other User's Travel Plans</p>
                 <th>Name</th>
@@ -43,10 +53,15 @@
                 <th>Do you want to join?</th>
             </tr>
             <tr>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
+                {% for others_plans in others_plans %}
+                <tr>
+                    <td>{{others_plans.user.name}}</td>
+                    <td><a href="travels/destination/{{others_plans.id}}">{{others_plans.destination}}</a></td>
+                    <td>{{others_plans.travel_date_from}}</td>
+                    <td>{{others_plans.travel_date_to}}</td>
+                    <td><a href="join/{{others_plans.id}}">Join</a></td>        
+                </tr>
+                {% endfor %}
             </tr>
         </table>
         <a href="/travels/add">Add Travel Plan</a>
